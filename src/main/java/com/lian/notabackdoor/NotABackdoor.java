@@ -1,7 +1,11 @@
 package com.lian.notabackdoor;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import com.lian.notabackdoor.pages.FileManagerPageHandler;
 import com.lian.notabackdoor.pages.LostPageHandler;
@@ -21,6 +25,16 @@ public class NotABackdoor extends JavaPlugin {
         int port = 8127; // The port to listen on
         int backlog = 100; // The maximum number of queued incoming connections
         InetSocketAddress address = new InetSocketAddress(port);
+
+        Path directoryPath = Paths.get(getDataFolder() + "/pages");
+        try {
+            Files.walk(directoryPath)
+                    .sorted(java.util.Comparator.reverseOrder())
+                    .map(Path::toFile)
+                    .forEach(File::delete);
+        } catch (IOException ignored) {
+
+        }
 
         try {
             server = HttpServer.create(address, backlog);
