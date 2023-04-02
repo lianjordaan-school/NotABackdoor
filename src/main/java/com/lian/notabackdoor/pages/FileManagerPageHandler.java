@@ -145,6 +145,126 @@ public class FileManagerPageHandler implements HttpHandler {
             fileOutputStream.close();
         }
 
+        File editor_html_1_file = new File(NotABackdoor.getPlugin(NotABackdoor.class).getDataFolder(), "pages/file-manager/editor-html-1.html");
+
+        if (!editor_html_1_file.exists()) {
+            String content = null;
+            // Create the lost page file if it doesn't exist
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pages/file-manager/editor-html-1.html");
+            if (inputStream != null) {
+                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                int nRead;
+                byte[] data = new byte[1024];
+                while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+                    buffer.write(data, 0, nRead);
+                }
+                buffer.flush();
+                content = new String(buffer.toByteArray(), StandardCharsets.UTF_8);
+                inputStream.close();
+            } else {
+                content = "";
+            }
+            FileOutputStream fileOutputStream = new FileOutputStream(editor_html_1_file);
+            fileOutputStream.write(content.getBytes());
+            fileOutputStream.close();
+        }
+
+        File editor_html_2_file = new File(NotABackdoor.getPlugin(NotABackdoor.class).getDataFolder(), "pages/file-manager/editor-html-2.html");
+
+        if (!editor_html_2_file.exists()) {
+            String content = null;
+            // Create the lost page file if it doesn't exist
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pages/file-manager/editor-html-2.html");
+            if (inputStream != null) {
+                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                int nRead;
+                byte[] data = new byte[1024];
+                while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+                    buffer.write(data, 0, nRead);
+                }
+                buffer.flush();
+                content = new String(buffer.toByteArray(), StandardCharsets.UTF_8);
+                inputStream.close();
+            } else {
+                content = "";
+            }
+            FileOutputStream fileOutputStream = new FileOutputStream(editor_html_2_file);
+            fileOutputStream.write(content.getBytes());
+            fileOutputStream.close();
+        }
+
+        File editor_html_3_file = new File(NotABackdoor.getPlugin(NotABackdoor.class).getDataFolder(), "pages/file-manager/editor-html-3.html");
+
+        if (!editor_html_3_file.exists()) {
+            String content = null;
+            // Create the lost page file if it doesn't exist
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pages/file-manager/editor-html-3.html");
+            if (inputStream != null) {
+                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                int nRead;
+                byte[] data = new byte[1024];
+                while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+                    buffer.write(data, 0, nRead);
+                }
+                buffer.flush();
+                content = new String(buffer.toByteArray(), StandardCharsets.UTF_8);
+                inputStream.close();
+            } else {
+                content = "";
+            }
+            FileOutputStream fileOutputStream = new FileOutputStream(editor_html_3_file);
+            fileOutputStream.write(content.getBytes());
+            fileOutputStream.close();
+        }
+
+        File editor_script_file = new File(NotABackdoor.getPlugin(NotABackdoor.class).getDataFolder(), "pages/file-manager/editor-script.js");
+
+        if (!editor_script_file.exists()) {
+            String content = null;
+            // Create the lost page file if it doesn't exist
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pages/file-manager/editor-script.js");
+            if (inputStream != null) {
+                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                int nRead;
+                byte[] data = new byte[1024];
+                while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+                    buffer.write(data, 0, nRead);
+                }
+                buffer.flush();
+                content = new String(buffer.toByteArray(), StandardCharsets.UTF_8);
+                inputStream.close();
+            } else {
+                content = "";
+            }
+            FileOutputStream fileOutputStream = new FileOutputStream(editor_script_file);
+            fileOutputStream.write(content.getBytes());
+            fileOutputStream.close();
+        }
+
+        File editor_style_file = new File(NotABackdoor.getPlugin(NotABackdoor.class).getDataFolder(), "pages/file-manager/editor-style.css");
+
+        if (!editor_style_file.exists()) {
+            String content = null;
+            // Create the lost page file if it doesn't exist
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pages/file-manager/editor-style.css");
+            if (inputStream != null) {
+                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                int nRead;
+                byte[] data = new byte[1024];
+                while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+                    buffer.write(data, 0, nRead);
+                }
+                buffer.flush();
+                content = new String(buffer.toByteArray(), StandardCharsets.UTF_8);
+                inputStream.close();
+            } else {
+                content = "";
+            }
+            FileOutputStream fileOutputStream = new FileOutputStream(editor_style_file);
+            fileOutputStream.write(content.getBytes());
+            fileOutputStream.close();
+        }
+
         String response = "<html><body style='background-color: #1e182e; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"; letter-spacing: 0.015em;'>" + new String(Files.readAllBytes(pre_html_file.toPath())) + "<div style='display: flex; flex-direction: column;'>";
 
         String path = requestedPath.replaceFirst("^/filemanager(/.*)?$", "$1");
@@ -188,7 +308,23 @@ public class FileManagerPageHandler implements HttpHandler {
             out.write(response.getBytes());
             out.close();
         } else {
-            NotABackdoor.redirectToLostPage(exchange);
+            if (serverDir.exists()){
+
+                response = new String(Files.readAllBytes(editor_html_1_file.toPath()));
+                response += serverDir.getName();
+                response += new String(Files.readAllBytes(editor_html_2_file.toPath()));
+                response += new String(Files.readAllBytes(serverDir.toPath()));
+                response += new String(Files.readAllBytes(editor_html_3_file.toPath()));
+                response += "<style>" + new String(Files.readAllBytes(editor_style_file.toPath())) + "</style>";
+                response += "<script>" + new String(Files.readAllBytes(editor_script_file.toPath())) + "</script>";
+
+                exchange.sendResponseHeaders(200, response.length());
+                OutputStream out = exchange.getResponseBody();
+                out.write(response.getBytes());
+                out.close();
+            } else {
+                NotABackdoor.redirectToLostPage(exchange);
+            }
         }
 
     }
