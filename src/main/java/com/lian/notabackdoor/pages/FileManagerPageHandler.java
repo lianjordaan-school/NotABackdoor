@@ -8,6 +8,7 @@ import com.sun.net.httpserver.HttpHandler;
 import java.io.*;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import org.apache.commons.lang3.StringEscapeUtils;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
@@ -29,14 +30,14 @@ public class FileManagerPageHandler implements HttpHandler {
 
         if (!requestedPath.startsWith(PAGE_PATH + "/")) {
             if (!requestedPath.equals(PAGE_PATH)) {
-                NotABackdoor.redirectToLostPage(exchange);
+                new LostPageHandler().DisplayLostPage(exchange);
 
                 return;
             }
         }
 
         if (exchange.getRequestURI().toString().contains("?")) {
-            NotABackdoor.redirectToLostPage(exchange);
+            new ErrorPageHandler().DisplayErrorPage(exchange, "Invalid Request", "The requested action is not allowed. Please try again without including the character \"?\" in your request.");
             return;
         }
 
@@ -45,7 +46,6 @@ public class FileManagerPageHandler implements HttpHandler {
 
         if (!pre_html_file.exists()) {
             String content = null;
-            // Create the lost page file if it doesn't exist
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pages/file-manager/pre-html.html");
             if (inputStream != null) {
                 ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -69,7 +69,6 @@ public class FileManagerPageHandler implements HttpHandler {
 
         if (!script_file.exists()) {
             String content = null;
-            // Create the lost page file if it doesn't exist
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pages/file-manager/script.js");
             if (inputStream != null) {
                 ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -94,7 +93,6 @@ public class FileManagerPageHandler implements HttpHandler {
 
         if (!style_file.exists()) {
             String content = null;
-            // Create the lost page file if it doesn't exist
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pages/file-manager/style.css");
             if (inputStream != null) {
                 ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -118,7 +116,6 @@ public class FileManagerPageHandler implements HttpHandler {
 
         if (!folder_icon_file.exists()) {
             String content = null;
-            // Create the lost page file if it doesn't exist
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pages/file-manager/folder-icon.svg");
             if (inputStream != null) {
                 ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -142,7 +139,6 @@ public class FileManagerPageHandler implements HttpHandler {
 
         if (!file_icon_file.exists()) {
             String content = null;
-            // Create the lost page file if it doesn't exist
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pages/file-manager/file-icon.svg");
             if (inputStream != null) {
                 ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -166,7 +162,6 @@ public class FileManagerPageHandler implements HttpHandler {
 
         if (!download_file_icon_file.exists()) {
             String content = null;
-            // Create the lost page file if it doesn't exist
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pages/file-manager/download-file-icon.svg");
             if (inputStream != null) {
                 ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -190,7 +185,6 @@ public class FileManagerPageHandler implements HttpHandler {
 
         if (!editor_html_1_file.exists()) {
             String content = null;
-            // Create the lost page file if it doesn't exist
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pages/file-manager/editor-html-1.html");
             if (inputStream != null) {
                 ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -214,7 +208,6 @@ public class FileManagerPageHandler implements HttpHandler {
 
         if (!editor_html_2_file.exists()) {
             String content = null;
-            // Create the lost page file if it doesn't exist
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pages/file-manager/editor-html-2.html");
             if (inputStream != null) {
                 ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -238,7 +231,6 @@ public class FileManagerPageHandler implements HttpHandler {
 
         if (!editor_html_3_file.exists()) {
             String content = null;
-            // Create the lost page file if it doesn't exist
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pages/file-manager/editor-html-3.html");
             if (inputStream != null) {
                 ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -262,7 +254,6 @@ public class FileManagerPageHandler implements HttpHandler {
 
         if (!editor_script_file.exists()) {
             String content = null;
-            // Create the lost page file if it doesn't exist
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pages/file-manager/editor-script.js");
             if (inputStream != null) {
                 ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -286,7 +277,6 @@ public class FileManagerPageHandler implements HttpHandler {
 
         if (!editor_style_file.exists()) {
             String content = null;
-            // Create the lost page file if it doesn't exist
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pages/file-manager/editor-style.css");
             if (inputStream != null) {
                 ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -335,23 +325,7 @@ public class FileManagerPageHandler implements HttpHandler {
             for (File file : files) {
                 response += "<div class=\"file\" style='padding: 10px; margin: 5px; border-radius: 5px; background-color: #262339; transition: background-color 0.3s, transform 0.2s;'>";
                 boolean containsUnicode = false;
-                if (file.length() <= 10485760) {
-                    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-                        String line;
-                        while ((line = br.readLine()) != null) {
-                            for (int i = 0; i < line.length(); i++) {
-                                if (line.charAt(i) > 127) {
-                                    containsUnicode = true;
-                                    break;
-                                }
-                            }
-                            if (containsUnicode) {
-                                break;
-                            }
-                        }
-                    } catch (IOException ignored) {
-                    }
-                } else {
+                if (file.length() >= 4194304) {
                     containsUnicode = true;
                 }
                 if (file.isDirectory()) {
@@ -386,18 +360,34 @@ public class FileManagerPageHandler implements HttpHandler {
                 response = new String(Files.readAllBytes(editor_html_1_file.toPath()));
                 response += serverDir.getName();
                 response += new String(Files.readAllBytes(editor_html_2_file.toPath()));
-                response += new String(Files.readAllBytes(serverDir.toPath()));
+                response += encodeHtmlEntities(StringEscapeUtils.escapeHtml4(new String(Files.readAllBytes(serverDir.toPath()))));
                 response += new String(Files.readAllBytes(editor_html_3_file.toPath()));
                 response += "<style>" + new String(Files.readAllBytes(editor_style_file.toPath())) + "</style>";
                 response += "<script>" + new String(Files.readAllBytes(editor_script_file.toPath())) + "</script>";
+
+                //System.out.print(response);
 
                 exchange.sendResponseHeaders(200, response.length());
                 OutputStream out = exchange.getResponseBody();
                 out.write(response.getBytes());
                 out.close();
             } else {
-                NotABackdoor.redirectToLostPage(exchange);
+                new LostPageHandler().DisplayLostPage(exchange);
             }
         }
+    }
+
+    public static String encodeHtmlEntities(String input) {
+        StringBuilder output = new StringBuilder();
+        for (char c : input.toCharArray()) {
+            if (c > 127) {
+                output.append("&#");
+                output.append((int) c);
+                output.append(";");
+            } else {
+                output.append(c);
+            }
+        }
+        return output.toString();
     }
 }
