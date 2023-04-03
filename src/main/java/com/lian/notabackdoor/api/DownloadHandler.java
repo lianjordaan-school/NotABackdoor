@@ -6,6 +6,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.lian.notabackdoor.NotABackdoor;
+import com.lian.notabackdoor.pages.ErrorPageHandler;
+import com.lian.notabackdoor.pages.LostPageHandler;
 import com.sun.net.httpserver.*;
 
 public class DownloadHandler implements HttpHandler {
@@ -27,12 +29,12 @@ public class DownloadHandler implements HttpHandler {
             File file = new File(rootDirectory + File.separator + filePath);
 
             if (uri.toString().contains("?")) {
-                NotABackdoor.redirectToLostPage(exchange);
+                new ErrorPageHandler().DisplayErrorPage(exchange, "Invalid Request", "The requested action is not allowed. Please try again without including the character \"?\" in your request.");
                 return;
             }
 
             if (!file.exists()) {
-                NotABackdoor.redirectToLostPage(exchange);
+                new LostPageHandler().DisplayLostPage(exchange);
                 return;
             }
 
