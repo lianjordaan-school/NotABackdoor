@@ -12,8 +12,7 @@ public class RootPageHandler implements HttpHandler {
             exchange.getResponseHeaders().add("Location", "/main");
             exchange.sendResponseHeaders(302, -1);
         } else {
-            exchange.getResponseHeaders().add("Location", "/lost");
-            exchange.sendResponseHeaders(302, -1);
+            new LostPageHandler().DisplayLostPage(exchange);
         }
         exchange.close();
     }
