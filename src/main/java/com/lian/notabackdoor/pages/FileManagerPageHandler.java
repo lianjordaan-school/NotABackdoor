@@ -1,26 +1,43 @@
 package com.lian.notabackdoor.pages;
 
 import com.lian.notabackdoor.NotABackdoor;
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.*;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 
 public class FileManagerPageHandler implements HttpHandler {
     private static final String PAGE_PATH = "/filemanager";
 
+    @Override
     public void handle(HttpExchange exchange) throws IOException {
+        String scheme = exchange.getProtocol().split("/")[0].toLowerCase();
+        Headers headers = exchange.getRequestHeaders();
+        List<String> hostHeader = headers.get("Host");
+        String host = null;
+        if (hostHeader != null && !hostHeader.isEmpty()) {
+            host = hostHeader.get(0);
+        }
         String requestedPath = exchange.getRequestURI().getPath();
+
         if (!requestedPath.startsWith(PAGE_PATH + "/")) {
             if (!requestedPath.equals(PAGE_PATH)) {
                 NotABackdoor.redirectToLostPage(exchange);
 
                 return;
             }
+        }
+
+        if (exchange.getRequestURI().toString().contains("?")) {
+            NotABackdoor.redirectToLostPage(exchange);
+            return;
         }
 
         new File(NotABackdoor.getPlugin(NotABackdoor.class).getDataFolder(), "pages/file-manager/").mkdirs();
@@ -141,6 +158,30 @@ public class FileManagerPageHandler implements HttpHandler {
                 content = "";
             }
             FileOutputStream fileOutputStream = new FileOutputStream(file_icon_file);
+            fileOutputStream.write(content.getBytes());
+            fileOutputStream.close();
+        }
+
+        File download_file_icon_file = new File(NotABackdoor.getPlugin(NotABackdoor.class).getDataFolder(), "pages/file-manager/download-file-icon.svg");
+
+        if (!download_file_icon_file.exists()) {
+            String content = null;
+            // Create the lost page file if it doesn't exist
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pages/file-manager/download-file-icon.svg");
+            if (inputStream != null) {
+                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                int nRead;
+                byte[] data = new byte[1024];
+                while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+                    buffer.write(data, 0, nRead);
+                }
+                buffer.flush();
+                content = new String(buffer.toByteArray(), StandardCharsets.UTF_8);
+                inputStream.close();
+            } else {
+                content = "";
+            }
+            FileOutputStream fileOutputStream = new FileOutputStream(download_file_icon_file);
             fileOutputStream.write(content.getBytes());
             fileOutputStream.close();
         }
@@ -275,6 +316,7 @@ public class FileManagerPageHandler implements HttpHandler {
             exchange.getResponseHeaders().add("Location", requestedPath + "/");
             exchange.sendResponseHeaders(302, -1);
         }
+
         path = "." + path;
 
         File serverDir = new File(path);
@@ -292,13 +334,44 @@ public class FileManagerPageHandler implements HttpHandler {
             });
             for (File file : files) {
                 response += "<div class=\"file\" style='padding: 10px; margin: 5px; border-radius: 5px; background-color: #262339; transition: background-color 0.3s, transform 0.2s;'>";
+                boolean containsUnicode = false;
+                if (file.length() <= 10485760) {
+                    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+                        String line;
+                        while ((line = br.readLine()) != null) {
+                            for (int i = 0; i < line.length(); i++) {
+                                if (line.charAt(i) > 127) {
+                                    containsUnicode = true;
+                                    break;
+                                }
+                            }
+                            if (containsUnicode) {
+                                break;
+                            }
+                        }
+                    } catch (IOException ignored) {
+                    }
+                } else {
+                    containsUnicode = true;
+                }
                 if (file.isDirectory()) {
                     response += new String(Files.readAllBytes(folder_icon_file.toPath()));
                 } else {
-                    response += new String(Files.readAllBytes(file_icon_file.toPath()));
+                    if (containsUnicode) {
+                        response += new String(Files.readAllBytes(download_file_icon_file.toPath()));
+                    } else {
+                        response += new String(Files.readAllBytes(file_icon_file.toPath()));
+                    }
                 }
 
-                response += "<a style='text-decoration: none; color: #c996cc; cursor: pointer;' href='./" + file.getName() + "/'>" + file.getName() + "</a></div>";
+                //System.out.println("Request URI: " + exchange.getRequestURI().getAuthority());
+
+                if (containsUnicode) {
+                    String FilemanagerToApiDownload = requestedPath.replace("/filemanager/", "/api/download/");
+                    response += "<a style='text-decoration: none; color: #c996cc; cursor: pointer;' href='" + scheme + "://" + host + FilemanagerToApiDownload + file.getName() + "'>" + file.getName() + "</a></div>";
+                } else {
+                    response += "<a style='text-decoration: none; color: #c996cc; cursor: pointer;' href='./" + file.getName() + "/'>" + file.getName() + "</a></div>";
+                }
             }
 
             response += "</div></body><style>" + new String(Files.readAllBytes(style_file.toPath())) + "</style><script>" + new String(Files.readAllBytes(script_file.toPath())) + "</script></html>";
@@ -326,6 +399,5 @@ public class FileManagerPageHandler implements HttpHandler {
                 NotABackdoor.redirectToLostPage(exchange);
             }
         }
-
     }
 }
