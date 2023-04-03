@@ -2,10 +2,6 @@
 
 const textArea = document.querySelector(".box textarea");
 
-setInterval(function() {
-  fetch(window.location.href);
-}, 10000);
-
 textArea.addEventListener('keydown', function(event) {
 	const openingBrackets = ['(', '[', '{', '"', "'", '`'];
 	const closingBrackets = [')', ']', '}', '"', "'", '`'];
