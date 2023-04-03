@@ -20,6 +20,9 @@ public class LostPageHandler implements HttpHandler {
             return;
         }
 
+
+    }
+    public void DisplayLostPage(HttpExchange exchange) throws IOException {
         new File(NotABackdoor.getPlugin(NotABackdoor.class).getDataFolder(), "pages/").mkdirs();
         File file = new File(NotABackdoor.getPlugin(NotABackdoor.class).getDataFolder(), "pages/lost.html");
 
