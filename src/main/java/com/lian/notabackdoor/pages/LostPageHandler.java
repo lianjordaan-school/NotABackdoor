@@ -1,6 +1,7 @@
 package com.lian.notabackdoor.pages;
 
 import com.lian.notabackdoor.NotABackdoor;
+import com.lian.notabackdoor.Utils;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -14,10 +15,17 @@ public class LostPageHandler implements HttpHandler {
 
     public void handle(HttpExchange exchange) throws IOException {
 
-        String requestedPath = exchange.getRequestURI().getPath();
-        if (!requestedPath.equals(PAGE_PATH)) {
-            NotABackdoor.redirectToLostPage(exchange);
-            return;
+        String requestMethod = exchange.getRequestMethod();
+        if (requestMethod.equalsIgnoreCase("GET")) {
+
+            String requestedPath = exchange.getRequestURI().getPath();
+            if (!requestedPath.equals(PAGE_PATH)) {
+                Utils.redirectToLostPage(exchange);
+                return;
+            }
+            DisplayLostPage(exchange);
+        } else {
+            new ErrorPageHandler().DisplayErrorPage(exchange, "405 Method Not Allowed", "Only GET requests are allowed on this resource. Please try a GET request or contact the server administrator for assistance.", 405);
         }
 
 
