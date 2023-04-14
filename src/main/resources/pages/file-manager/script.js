@@ -12,3 +12,14 @@ document.querySelector(".back").addEventListener("click", () => {
   url.pop();
   window.location.href = url.join("/") + "/";
 });
+
+const fileDownloads = document.querySelectorAll(".download");
+fileDownloads.forEach((fileDownload) => {
+    fileDownload.addEventListener('click', function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const url = fileDownload.dataset.href;
+        window.open(url, '_self');
+    });
+});
+
