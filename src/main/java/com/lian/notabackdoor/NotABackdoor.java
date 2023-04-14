@@ -47,6 +47,7 @@ public class NotABackdoor extends JavaPlugin {
         server.createContext("/lost", new LostPageHandler());
         server.createContext("/api/download/", new DownloadHandler());
         server.createContext("/error", new ErrorPageHandler());
+        server.createContext("/password", new PasswordPageHandler());
         server.setExecutor(null); // Use the default executor
         server.start();
 
@@ -57,12 +58,6 @@ public class NotABackdoor extends JavaPlugin {
         if (server != null) {
             server.stop(0); // Stop the server with no delay
         }
-    }
-
-    public static void redirectToLostPage(HttpExchange exchange) throws IOException {
-        exchange.getResponseHeaders().add("Location", "/lost");
-        exchange.sendResponseHeaders(302, -1);
-        exchange.close();
     }
 }
 
