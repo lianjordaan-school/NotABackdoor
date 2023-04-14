@@ -6,6 +6,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.lian.notabackdoor.NotABackdoor;
+import com.lian.notabackdoor.Utils;
 import com.lian.notabackdoor.pages.ErrorPageHandler;
 import com.lian.notabackdoor.pages.LostPageHandler;
 import com.sun.net.httpserver.*;
@@ -22,6 +23,9 @@ public class DownloadHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+
+        Utils.checkUserPassword(exchange);
+
         String requestMethod = exchange.getRequestMethod();
         if (requestMethod.equalsIgnoreCase("GET")) {
             URI uri = exchange.getRequestURI();
@@ -29,7 +33,7 @@ public class DownloadHandler implements HttpHandler {
             File file = new File(rootDirectory + File.separator + filePath);
 
             if (uri.toString().contains("?")) {
-                new ErrorPageHandler().DisplayErrorPage(exchange, "Invalid Request", "The requested action is not allowed. Please try again without including the character \"?\" in your request.");
+                new ErrorPageHandler().DisplayErrorPage(exchange, "Invalid Request", "The requested action is not allowed. Please try again without including the character \"?\" in your request.", 400);
                 return;
             }
 
@@ -64,7 +68,8 @@ public class DownloadHandler implements HttpHandler {
                 }
             });
         } else {
-            exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+            //exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+            new ErrorPageHandler().DisplayErrorPage(exchange, "405 Method Not Allowed", "Only GET requests are allowed on this resource. Please try a GET request or contact the server administrator for assistance.", 405);
         }
     }
 }
