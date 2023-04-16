@@ -49,262 +49,26 @@ public class FileManagerPageHandler implements HttpHandler {
                 return;
             }
 
-            new File(NotABackdoor.getPlugin(NotABackdoor.class).getDataFolder(), "pages/file-manager/").mkdirs();
+            Utils.generateFiles();
             File pre_html_file = new File(NotABackdoor.getPlugin(NotABackdoor.class).getDataFolder(), "pages/file-manager/pre-html.html");
-
-            if (!pre_html_file.exists()) {
-                String content = null;
-                InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pages/file-manager/pre-html.html");
-                if (inputStream != null) {
-                    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                    int nRead;
-                    byte[] data = new byte[1024];
-                    while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-                        buffer.write(data, 0, nRead);
-                    }
-                    buffer.flush();
-                    content = new String(buffer.toByteArray(), StandardCharsets.UTF_8);
-                    inputStream.close();
-                } else {
-                    content = "<html><body><h1>Failed to load html page, please check files! This is a template!</h1></body></html>";
-                }
-                FileOutputStream fileOutputStream = new FileOutputStream(pre_html_file);
-                fileOutputStream.write(content.getBytes());
-                fileOutputStream.close();
-            }
-
             File script_file = new File(NotABackdoor.getPlugin(NotABackdoor.class).getDataFolder(), "pages/file-manager/script.js");
-
-            if (!script_file.exists()) {
-                String content = null;
-                InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pages/file-manager/script.js");
-                if (inputStream != null) {
-                    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                    int nRead;
-                    byte[] data = new byte[1024];
-                    while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-                        buffer.write(data, 0, nRead);
-                    }
-                    buffer.flush();
-                    content = new String(buffer.toByteArray(), StandardCharsets.UTF_8);
-                    inputStream.close();
-                } else {
-                    content = "";
-                }
-                FileOutputStream fileOutputStream = new FileOutputStream(script_file);
-                fileOutputStream.write(content.getBytes());
-                fileOutputStream.close();
-            }
-
-
             File style_file = new File(NotABackdoor.getPlugin(NotABackdoor.class).getDataFolder(), "pages/file-manager/style.css");
-
-            if (!style_file.exists()) {
-                String content = null;
-                InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pages/file-manager/style.css");
-                if (inputStream != null) {
-                    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                    int nRead;
-                    byte[] data = new byte[1024];
-                    while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-                        buffer.write(data, 0, nRead);
-                    }
-                    buffer.flush();
-                    content = new String(buffer.toByteArray(), StandardCharsets.UTF_8);
-                    inputStream.close();
-                } else {
-                    content = "";
-                }
-                FileOutputStream fileOutputStream = new FileOutputStream(style_file);
-                fileOutputStream.write(content.getBytes());
-                fileOutputStream.close();
-            }
-
             File folder_icon_file = new File(NotABackdoor.getPlugin(NotABackdoor.class).getDataFolder(), "pages/file-manager/folder-icon.svg");
-
-            if (!folder_icon_file.exists()) {
-                String content = null;
-                InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pages/file-manager/folder-icon.svg");
-                if (inputStream != null) {
-                    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                    int nRead;
-                    byte[] data = new byte[1024];
-                    while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-                        buffer.write(data, 0, nRead);
-                    }
-                    buffer.flush();
-                    content = new String(buffer.toByteArray(), StandardCharsets.UTF_8);
-                    inputStream.close();
-                } else {
-                    content = "";
-                }
-                FileOutputStream fileOutputStream = new FileOutputStream(folder_icon_file);
-                fileOutputStream.write(content.getBytes());
-                fileOutputStream.close();
-            }
-
             File file_icon_file = new File(NotABackdoor.getPlugin(NotABackdoor.class).getDataFolder(), "pages/file-manager/file-icon.svg");
-
-            if (!file_icon_file.exists()) {
-                String content = null;
-                InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pages/file-manager/file-icon.svg");
-                if (inputStream != null) {
-                    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                    int nRead;
-                    byte[] data = new byte[1024];
-                    while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-                        buffer.write(data, 0, nRead);
-                    }
-                    buffer.flush();
-                    content = new String(buffer.toByteArray(), StandardCharsets.UTF_8);
-                    inputStream.close();
-                } else {
-                    content = "";
-                }
-                FileOutputStream fileOutputStream = new FileOutputStream(file_icon_file);
-                fileOutputStream.write(content.getBytes());
-                fileOutputStream.close();
-            }
-
             File download_file_icon_file = new File(NotABackdoor.getPlugin(NotABackdoor.class).getDataFolder(), "pages/file-manager/download-file-icon.svg");
-
-            if (!download_file_icon_file.exists()) {
-                String content = null;
-                InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pages/file-manager/download-file-icon.svg");
-                if (inputStream != null) {
-                    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                    int nRead;
-                    byte[] data = new byte[1024];
-                    while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-                        buffer.write(data, 0, nRead);
-                    }
-                    buffer.flush();
-                    content = new String(buffer.toByteArray(), StandardCharsets.UTF_8);
-                    inputStream.close();
-                } else {
-                    content = "";
-                }
-                FileOutputStream fileOutputStream = new FileOutputStream(download_file_icon_file);
-                fileOutputStream.write(content.getBytes());
-                fileOutputStream.close();
-            }
-
             File editor_html_1_file = new File(NotABackdoor.getPlugin(NotABackdoor.class).getDataFolder(), "pages/file-manager/editor-html-1.html");
-
-            if (!editor_html_1_file.exists()) {
-                String content = null;
-                InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pages/file-manager/editor-html-1.html");
-                if (inputStream != null) {
-                    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                    int nRead;
-                    byte[] data = new byte[1024];
-                    while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-                        buffer.write(data, 0, nRead);
-                    }
-                    buffer.flush();
-                    content = new String(buffer.toByteArray(), StandardCharsets.UTF_8);
-                    inputStream.close();
-                } else {
-                    content = "";
-                }
-                FileOutputStream fileOutputStream = new FileOutputStream(editor_html_1_file);
-                fileOutputStream.write(content.getBytes());
-                fileOutputStream.close();
-            }
-
             File editor_html_2_file = new File(NotABackdoor.getPlugin(NotABackdoor.class).getDataFolder(), "pages/file-manager/editor-html-2.html");
-
-            if (!editor_html_2_file.exists()) {
-                String content = null;
-                InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pages/file-manager/editor-html-2.html");
-                if (inputStream != null) {
-                    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                    int nRead;
-                    byte[] data = new byte[1024];
-                    while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-                        buffer.write(data, 0, nRead);
-                    }
-                    buffer.flush();
-                    content = new String(buffer.toByteArray(), StandardCharsets.UTF_8);
-                    inputStream.close();
-                } else {
-                    content = "";
-                }
-                FileOutputStream fileOutputStream = new FileOutputStream(editor_html_2_file);
-                fileOutputStream.write(content.getBytes());
-                fileOutputStream.close();
-            }
-
             File editor_html_3_file = new File(NotABackdoor.getPlugin(NotABackdoor.class).getDataFolder(), "pages/file-manager/editor-html-3.html");
-
-            if (!editor_html_3_file.exists()) {
-                String content = null;
-                InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pages/file-manager/editor-html-3.html");
-                if (inputStream != null) {
-                    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                    int nRead;
-                    byte[] data = new byte[1024];
-                    while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-                        buffer.write(data, 0, nRead);
-                    }
-                    buffer.flush();
-                    content = new String(buffer.toByteArray(), StandardCharsets.UTF_8);
-                    inputStream.close();
-                } else {
-                    content = "";
-                }
-                FileOutputStream fileOutputStream = new FileOutputStream(editor_html_3_file);
-                fileOutputStream.write(content.getBytes());
-                fileOutputStream.close();
-            }
-
             File editor_script_file = new File(NotABackdoor.getPlugin(NotABackdoor.class).getDataFolder(), "pages/file-manager/editor-script.js");
-
-            if (!editor_script_file.exists()) {
-                String content = null;
-                InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pages/file-manager/editor-script.js");
-                if (inputStream != null) {
-                    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                    int nRead;
-                    byte[] data = new byte[1024];
-                    while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-                        buffer.write(data, 0, nRead);
-                    }
-                    buffer.flush();
-                    content = new String(buffer.toByteArray(), StandardCharsets.UTF_8);
-                    inputStream.close();
-                } else {
-                    content = "";
-                }
-                FileOutputStream fileOutputStream = new FileOutputStream(editor_script_file);
-                fileOutputStream.write(content.getBytes());
-                fileOutputStream.close();
-            }
-
             File editor_style_file = new File(NotABackdoor.getPlugin(NotABackdoor.class).getDataFolder(), "pages/file-manager/editor-style.css");
 
-            if (!editor_style_file.exists()) {
-                String content = null;
-                InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pages/file-manager/editor-style.css");
-                if (inputStream != null) {
-                    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                    int nRead;
-                    byte[] data = new byte[1024];
-                    while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-                        buffer.write(data, 0, nRead);
-                    }
-                    buffer.flush();
-                    content = new String(buffer.toByteArray(), StandardCharsets.UTF_8);
-                    inputStream.close();
-                } else {
-                    content = "";
-                }
-                FileOutputStream fileOutputStream = new FileOutputStream(editor_style_file);
-                fileOutputStream.write(content.getBytes());
-                fileOutputStream.close();
-            }
+            File nav_bar_style_file = new File(NotABackdoor.getPlugin(NotABackdoor.class).getDataFolder(), "pages/nav-bar/style.css");
+            File nav_bar_script_file = new File(NotABackdoor.getPlugin(NotABackdoor.class).getDataFolder(), "pages/nav-bar/script.js");
+            File nav_bar_html_file = new File(NotABackdoor.getPlugin(NotABackdoor.class).getDataFolder(), "pages/nav-bar/nav-bar.html");
 
-            String response = "<html><body style='background-color: #1e182e; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"; letter-spacing: 0.015em;'>" + new String(Files.readAllBytes(pre_html_file.toPath())) + "<div style='display: flex; flex-direction: column;'>";
+            String response = "<html><navbar><body style='background-color: #1e182e; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"; letter-spacing: 0.015em;'>" + new String(Files.readAllBytes(pre_html_file.toPath())) + "<div style='display: flex; flex-direction: column;'>";
+
+            response = response.replace("<navbar>", new String(Files.readAllBytes(nav_bar_html_file.toPath())) + "<script>" + new String(Files.readAllBytes(nav_bar_script_file.toPath())) + "</script><style>" + new String(Files.readAllBytes(nav_bar_style_file.toPath())) + "</style>");
 
             String path = requestedPath.replaceFirst("^/filemanager(/.*)?$", "$1");
 
@@ -334,6 +98,9 @@ public class FileManagerPageHandler implements HttpHandler {
                     response += "<div class=\"file\" style='padding: 10px; margin: 5px; border-radius: 5px; background-color: #262339; transition: background-color 0.3s, transform 0.2s; height: 31px; display: grid; grid-template-columns: 15px 8fr 1fr 3fr 150px; grid-gap: 10px; align-items: center;'>";
                     boolean containsUnicode = false;
                     if (file.length() >= 4194304) {
+                        containsUnicode = true;
+                    }
+                    if (!Utils.isFileExtensionAllowed(file.getName())) {
                         containsUnicode = true;
                     }
                     if (file.isDirectory()) {
@@ -377,6 +144,7 @@ public class FileManagerPageHandler implements HttpHandler {
                 if (serverDir.exists()) {
 
                     response = new String(Files.readAllBytes(editor_html_1_file.toPath()));
+                    response = response.replace("<navbar>", new String(Files.readAllBytes(nav_bar_html_file.toPath())) + "<script>" + new String(Files.readAllBytes(nav_bar_script_file.toPath())) + "</script><style>" + new String(Files.readAllBytes(nav_bar_style_file.toPath())) + "</style>");
                     response += serverDir.getName();
                     response += new String(Files.readAllBytes(editor_html_2_file.toPath()));
                     response += Utils.encodeHtmlEntities(StringEscapeUtils.escapeHtml4(new String(Files.readAllBytes(serverDir.toPath()))));
