@@ -9,12 +9,12 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import com.lian.notabackdoor.api.DownloadHandler;
+import com.lian.notabackdoor.api.SaveFileHandler;
 import com.lian.notabackdoor.api.SetPasswordHandler;
 import com.lian.notabackdoor.pages.*;
 import com.sun.net.httpserver.HttpServer;
 
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class NotABackdoor extends JavaPlugin {
@@ -69,6 +69,7 @@ public class NotABackdoor extends JavaPlugin {
         server.createContext("/filemanager", new FileManagerPageHandler());
         server.createContext("/lost", new LostPageHandler());
         server.createContext("/api/download/", new DownloadHandler());
+        server.createContext("/api/save-file/", new SaveFileHandler());
         server.createContext("/api/set-password/", new SetPasswordHandler());
         server.createContext("/error", new ErrorPageHandler());
         server.createContext("/password", new PasswordPageHandler());
