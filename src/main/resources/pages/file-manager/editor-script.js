@@ -153,3 +153,37 @@ function posLoop() {
 		posLoop();
 	}, 10);
 }
+
+document.querySelector('.save').addEventListener('click', function() {
+    // Get the value of 'Referer' header from the current request
+    var url = window.location.href;
+
+    // Replace the first occurrence of 'filemanager' with 'api/save'
+    url = url.replace('filemanager', 'api/save-file');
+
+    // Get the contents of the first 'textarea' element
+    var body = document.querySelector('textarea').value;
+
+    // Create a new XMLHttpRequest object
+    var xhr = new XMLHttpRequest();
+
+    // Set the HTTP method and URL
+    xhr.open('POST', url, true);
+
+    // Set the Content-Type header to 'application/json'
+    xhr.setRequestHeader('Content-Type', 'text/plain');
+
+    // Set the body of the request
+    xhr.send(body);
+
+    // Add an event listener for the 'load' event
+    xhr.addEventListener('load', function() {
+        if (xhr.status === 201) {
+            // Request was successful, handle response
+            console.log('Request successful:', xhr.responseText);
+        } else {
+            // Request failed, handle error
+            console.error('Request failed:', xhr.statusText);
+        }
+    });
+});
