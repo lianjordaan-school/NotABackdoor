@@ -100,12 +100,12 @@ public class FileManagerPageHandler implements HttpHandler {
                     if (file.length() >= 4194304) {
                         containsUnicode = true;
                     }
-                    if (!Utils.isFileExtensionAllowed(file.getName())) {
-                        containsUnicode = true;
-                    }
                     if (file.isDirectory()) {
                         response += new String(Files.readAllBytes(folder_icon_file.toPath()));
                     } else {
+                        if (!Utils.isFileExtensionAllowed(file.getName())) {
+                            containsUnicode = true;
+                        }
                         if (containsUnicode) {
                             response += new String(Files.readAllBytes(download_file_icon_file.toPath()));
                         } else {
