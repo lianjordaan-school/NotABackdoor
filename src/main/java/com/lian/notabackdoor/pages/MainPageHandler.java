@@ -25,7 +25,7 @@ public class MainPageHandler implements HttpHandler {
                 return;
             }
 
-            String response = "<html><body><h1>Main Page</h1></body></html>";
+            String response = "<html><head><title>Main Page</title><style>body{background-color:#242424;color: #fff;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;margin:0;}.button{padding:20px 40px;font-size:18px;background-color:#4CAF50;color:#fff;border:none;border-radius:5px;cursor:pointer;}</style></head><body><h1>Main Page</h1><button class=\"button\" onclick=\"location.href='/filemanager'\">Go to FileManager</button></body></html>";
             exchange.sendResponseHeaders(200, response.length());
             OutputStream out = exchange.getResponseBody();
             out.write(response.getBytes());
