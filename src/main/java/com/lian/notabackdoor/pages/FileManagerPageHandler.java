@@ -66,7 +66,9 @@ public class FileManagerPageHandler implements HttpHandler {
             File nav_bar_script_file = new File(NotABackdoor.getPlugin(NotABackdoor.class).getDataFolder(), "pages/nav-bar/script.js");
             File nav_bar_html_file = new File(NotABackdoor.getPlugin(NotABackdoor.class).getDataFolder(), "pages/nav-bar/nav-bar.html");
 
-            String response = "<html><navbar><body style='background-color: #1e182e; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"; letter-spacing: 0.015em;'>" + new String(Files.readAllBytes(pre_html_file.toPath())) + "<div style='display: flex; flex-direction: column;'>";
+            String response = "<html>" +
+                    //<navbar>
+                    "<body style='background-color: #1e182e; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"; letter-spacing: 0.015em;'>" + new String(Files.readAllBytes(pre_html_file.toPath())) + "<div style='display: flex; flex-direction: column;'>";
 
             response = response.replace("<navbar>", new String(Files.readAllBytes(nav_bar_html_file.toPath())) + "<script>" + new String(Files.readAllBytes(nav_bar_script_file.toPath())) + "</script><style>" + new String(Files.readAllBytes(nav_bar_style_file.toPath())) + "</style>");
 
