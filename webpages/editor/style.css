@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap');
+
+
+body{
+    background-color: #04000F;;
+}
+.navbar{
+    position: absolute;
+    width: 100%;
+    height: 13%;
+    background: #080123;
+    top: 0;
+    left: 0;
+
+}
+.not{
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 13%;
+    flex-direction: column;
+    justify-content: center;
+    color: #FFF;
+    text-align: center;
+    font-family: Outfit;
+    font-size: 64px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    top: 0;
+    left: 0;
+}
+.logo{
+    width: 100px;
+    height: 100px;
+}
+h3{
+    color: #FFF;
+    text-align: center;
+    font-family: Outfit;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-top: 15%;
+    margin-bottom: 15%;
+    max-height: 15%;
+    width: 100%;
+    
+}
+.navbar2{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    position: relative;
+    width: 100%;
+    height: 80px;
+    background-color: #1F0481;
+    left: 0;
+    right: 0;
+    align-items: center;
+    overflow: hidden;
+}
+.underline{
+    position: relative;
+    width: 10%;
+}
+.overlay{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    color: #FFF;
+    background-color: #d3d3d3;
+    opacity: 0;
+    transition: .5s ease;
+
+}
+.overlay:hover{
+    opacity: 21%;
+}
+div.overlay:hover hr{
+    opacity: 100%;
+}
+hr{
+    width: 100%;
+    color: hsl(180, 7%, 97%);
+    border: 1px hsl(0, 0%, 100%);
+    border-color: hsl(0, 0%, 100%);
+    border-bottom: 25px solid hsl(0, 0%, 100%);
+    margin-top: 33%;
+    opacity: 1;
+}
