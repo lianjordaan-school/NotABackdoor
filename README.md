@@ -12,13 +12,21 @@ The author(s) of this software do not guarantee the accuracy, reliability, or co
 
 ## Features
 
-- Run a web server on the Minecraft server
-- Access a server panel through a website
-- Password protection for added security
+### Completed Features
 
-## Installation
+- List files on the server
+- Download and edit files
+- Configure plugin settings
 
-Installation instructions will be provided in the future as the project is still in development.
+### Features in Progress
+
+- Create, delete, and move files
+- Zip and unzip files
+- Add a console log for monitoring
+- Execute commands in the server console
+- Manage player list: op/deop, ban/unban, whitelist/unwhitelist players
+- Perform server backups
+- Redesigned website for improved user experience
 
 ## Usage
 
